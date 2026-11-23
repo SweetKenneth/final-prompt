@@ -181,3 +181,23 @@
     linear-gradient(to bottom, oklch(0.28 0.016 255 / 0.28) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.25);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.4s ease-in-out infinite;
+}

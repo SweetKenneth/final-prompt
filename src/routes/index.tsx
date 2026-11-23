@@ -161,6 +161,13 @@ function Index() {
       <footer className="border-t border-border py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-4 font-mono text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-6">
           <span>The Final Prompt v1.3.0 · MIT License · Specification &amp; offline assembler</span>
+          <span>
+            Made by humans who care{' '}
+            <span className="animate-heartbeat inline-block" aria-hidden="true">
+              ❤️
+            </span>{' '}
+            | Another KESJr Collective Project
+          </span>
           <span>Built to last — no invented green checks</span>
         </div>
       </footer>
