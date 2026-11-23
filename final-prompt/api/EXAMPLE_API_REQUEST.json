@@ -1,0 +1,33 @@
+{
+  "project_id": "project_example",
+  "repo_ref": "github:example-org/example-app#main",
+  "target_environment": "staging",
+  "mode": "deep",
+  "scope": {
+    "kind": "entire_repository"
+  },
+  "crosscuts": {
+    "SYSTEM_INTEGRATION_CLOSURE": "auto",
+    "ARCHITECTURAL_RESILIENCE": "auto",
+    "VISUAL_EXPERIENCE_POLISH": "auto",
+    "API_EXECUTION_INTEGRITY": "auto"
+  },
+  "budget": {
+    "allow_paid_calls": false,
+    "max_run_cost_usd": 5.0,
+    "max_tool_calls": 80,
+    "deadline_seconds": 3600,
+    "max_model_tokens": 250000
+  },
+  "permissions": {
+    "allow_branch_patches": true,
+    "allow_production_deploy": false,
+    "allow_production_data_access": false,
+    "allow_risky_migrations": false,
+    "allow_public_branding_change": false,
+    "allow_legal_publication": false,
+    "allow_external_communications": false,
+    "allow_private_guide_generation": false
+  },
+  "operator_note": "Illustrative request only. $5 is the total max for model plus tools; paid downstream tool calls are disabled. Branch edits still require host authorization and workspace isolation."
+}

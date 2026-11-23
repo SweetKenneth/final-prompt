@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finalprompt.example/schema/api-run-request-v1.3.json",
+  "title": "Final Prompt API run request \u2014 illustrative host contract v1.3",
+  "description": "Host must still authenticate identity, ownership, consent and side-effect authorization outside this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project_id",
+    "repo_ref",
+    "target_environment",
+    "mode",
+    "scope",
+    "crosscuts",
+    "budget",
+    "permissions"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "repo_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "target_environment": {
+      "enum": [
+        "local",
+        "staging",
+        "production",
+        "other"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "audit_only",
+        "standard",
+        "deep",
+        "maximum"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "single_page",
+            "workflow",
+            "subsystem",
+            "entire_site",
+            "entire_repository"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "crosscuts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "SYSTEM_INTEGRATION_CLOSURE",
+        "ARCHITECTURAL_RESILIENCE",
+        "VISUAL_EXPERIENCE_POLISH",
+        "API_EXECUTION_INTEGRITY"
+      ],
+      "properties": {
+        "SYSTEM_INTEGRATION_CLOSURE": {
+          "enum": [
+            "auto",
+            "enabled",
+            "disabled"
+          ]
+        },
+        "ARCHITECTURAL_RESILIENCE": {
+          "enum": [
+            "auto",
+            "enabled",
+            "disabled"
+          ]
+        },
+        "VISUAL_EXPERIENCE_POLISH": {
+          "enum": [
+            "auto",
+            "enabled",
+            "disabled"
+          ]
+        },
+        "API_EXECUTION_INTEGRITY": {
+          "enum": [
+            "auto",
+            "enabled",
+            "disabled"
+          ]
+        }
+      },
+      "description": "Compatibility routing flags: 03 Integration, 04 API Host, 11 Resilience, 19 Visual. Host must normalize with modules and reject contradictions; schema alone does not enforce this."
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_paid_calls",
+        "max_run_cost_usd",
+        "max_tool_calls"
+      ],
+      "properties": {
+        "allow_paid_calls": {
+          "type": "boolean"
+        },
+        "max_run_cost_usd": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Host-enforced total budget for model API, fallback, tools and compute. Zero means no metered calls."
+        },
+        "max_tool_calls": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "deadline_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 604800
+        },
+        "max_model_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000000,
+          "description": "Host-enforced token ceiling across requests, including retries and fallback."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "allow_paid_calls": {
+                "const": true
+              }
+            },
+            "required": [
+              "allow_paid_calls"
+            ]
+          },
+          "then": {
+            "properties": {
+              "max_run_cost_usd": {
+                "exclusiveMinimum": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_branch_patches",
+        "allow_production_deploy",
+        "allow_production_data_access",
+        "allow_risky_migrations",
+        "allow_public_branding_change",
+        "allow_legal_publication",
+        "allow_external_communications",
+        "allow_private_guide_generation"
+      ],
+      "properties": {
+        "allow_branch_patches": {
+          "type": "boolean"
+        },
+        "allow_production_deploy": {
+          "type": "boolean"
+        },
+        "allow_production_data_access": {
+          "type": "boolean"
+        },
+        "allow_risky_migrations": {
+          "type": "boolean"
+        },
+        "allow_public_branding_change": {
+          "type": "boolean"
+        },
+        "allow_legal_publication": {
+          "type": "boolean"
+        },
+        "allow_external_communications": {
+          "type": "boolean"
+        },
+        "allow_private_guide_generation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 25,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 25
+      }
+    },
+    "operator_note": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  }
+}

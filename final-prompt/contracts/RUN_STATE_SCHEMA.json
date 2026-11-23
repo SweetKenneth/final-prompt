@@ -1,0 +1,671 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finalprompt.example/schema/run-state-v1.1.json",
+  "title": "Final Prompt run-state ledger (conceptual v1.1)",
+  "description": "Conceptual typed ledger; service must still authenticate approvals, authorize resources and validate evidence provenance. The .example domain is deliberately not live.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "project_id",
+    "started_at",
+    "baseline_commit",
+    "policy_bundle_hash",
+    "target_environment",
+    "mode",
+    "status",
+    "budget",
+    "modules",
+    "findings",
+    "tests",
+    "approvals"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "baseline_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "policy_bundle_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_environment": {
+      "type": "string",
+      "enum": [
+        "local",
+        "staging",
+        "production",
+        "other"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "audit_only",
+        "standard",
+        "deep",
+        "maximum"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "INVENTORY",
+        "PLAN_READY",
+        "APPROVAL_REQUIRED",
+        "RUNNING",
+        "VERIFYING",
+        "PAUSED",
+        "COMPLETED",
+        "BLOCKED",
+        "FAILED",
+        "CANCELED"
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_paid_calls",
+        "spent_usd"
+      ],
+      "properties": {
+        "allow_paid_calls": {
+          "type": "boolean"
+        },
+        "cap_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "spent_usd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "metering_verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/module"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/test"
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/approval"
+      }
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resume_after": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verdict": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "SHIP_VERIFIED_SCOPE",
+        "BLOCK",
+        "HUMAN_REVIEW_REQUIRED",
+        null
+      ]
+    },
+    "documentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "distribution_verdict",
+        "classification"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_STARTED",
+            "GENERATING",
+            "AUDITING",
+            "COMPLETED",
+            "PARTIAL",
+            "BLOCKED",
+            "SKIPPED"
+          ]
+        },
+        "distribution_verdict": {
+          "enum": [
+            "PRIVATE_READY",
+            "REQUIRES_OWNER_CONFIRMATION",
+            "BLOCKED_FOR_DISTRIBUTION",
+            "PARTIAL_ARCHIVE",
+            "SKIPPED",
+            null
+          ]
+        },
+        "classification": {
+          "enum": [
+            "OWNER_PRIVATE",
+            "INTERNAL",
+            "CONFIDENTIAL",
+            "RESTRICTED"
+          ]
+        },
+        "guide_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifest_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "artifact_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "approval_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "applicability_reason": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "file_ownership": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "module_id",
+        "severity",
+        "status",
+        "summary",
+        "evidence_confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "module_id": {
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "NONE"
+          ]
+        },
+        "patch_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "risk_acceptance_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "status",
+        "environment",
+        "commit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "command": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "executed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "evidence_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "why_not_run": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "executed_at",
+              "evidence_ref"
+            ],
+            "properties": {
+              "executed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "UNVERIFIED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "why_not_run"
+            ],
+            "properties": {
+              "why_not_run": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "action",
+        "status",
+        "scope"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "DENIED",
+            "EXPIRED"
+          ]
+        },
+        "scope": {
+          "type": "string"
+        },
+        "approver_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "diff_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "APPROVED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "approver_id",
+              "approved_at"
+            ],
+            "properties": {
+              "approver_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "approved_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "UNVERIFIED",
+        "NOT_APPLICABLE",
+        "ACCEPTED_RISK"
+      ]
+    },
+    "documentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested",
+        "status",
+        "distribution_status",
+        "classification",
+        "artifacts"
+      ],
+      "properties": {
+        "requested": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "PASS",
+            "FAIL",
+            "BLOCKED",
+            "UNVERIFIED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "distribution_status": {
+          "enum": [
+            "PRIVATE_READY",
+            "REQUIRES_OWNER_CONFIRMATION",
+            "BLOCKED_FOR_DISTRIBUTION",
+            "PARTIAL_ARCHIVE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "classification": {
+          "enum": [
+            "PUBLIC",
+            "INTERNAL",
+            "CONFIDENTIAL",
+            "RESTRICTED"
+          ]
+        },
+        "source_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owner_identity_status": {
+          "enum": [
+            "VERIFIED",
+            "OWNER_REPORTED",
+            "NEEDS_CONFIRMATION",
+            "UNAVAILABLE"
+          ]
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "status"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "CREATED",
+                  "UNVERIFIED",
+                  "NOT_GENERATED",
+                  "REDACTED"
+                ]
+              },
+              "sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "source_register_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "claim_ledger_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "guide_audit_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owner_approval_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

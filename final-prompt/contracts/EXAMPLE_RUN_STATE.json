@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.1",
+  "run_id": "demo-run-001",
+  "project_id": "demo-project",
+  "started_at": "2026-11-03T00:00:00Z",
+  "updated_at": "2026-11-03T00:00:00Z",
+  "baseline_commit": "demo-baseline",
+  "current_commit": null,
+  "policy_bundle_hash": "demo-unverified-hash",
+  "target_environment": "local",
+  "mode": "audit_only",
+  "status": "CREATED",
+  "budget": {
+    "allow_paid_calls": false,
+    "cap_usd": 0,
+    "spent_usd": 0,
+    "metering_verified": false
+  },
+  "modules": [
+    {
+      "id": "01_GAP_ANALYSIS",
+      "status": "NOT_STARTED",
+      "applicability_reason": "Demo only; no repository accessed",
+      "evidence_refs": [],
+      "file_ownership": []
+    }
+  ],
+  "findings": [],
+  "tests": [],
+  "approvals": [],
+  "artifact_refs": [],
+  "resume_after": null,
+  "verdict": null,
+  "documentation": {
+    "status": "NOT_STARTED",
+    "distribution_verdict": null,
+    "classification": "OWNER_PRIVATE",
+    "guide_revision": null,
+    "source_commit": null,
+    "manifest_ref": null,
+    "artifact_refs": [],
+    "approval_refs": []
+  }
+}

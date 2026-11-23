@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project Architecture
+
+- Keep `final-prompt/` (source-controlled canonical v1.3.0 MIT package) and `public/downloads/v1.3.0/` (web-served raw files) in sync, and regenerate `Final_Prompt_v1.3.0_MIT.zip` + `SHA256SUMS.txt` whenever any prompt or contract changes so downloads and manifest hashes stay truthful.
+- Keep the browser API/MCP workbench strictly client-side and bounded (max 5 modules, ascending order, 160k char default cap) to mirror `final-prompt/tools/assemble_api_messages.py` without claiming hosted execution.

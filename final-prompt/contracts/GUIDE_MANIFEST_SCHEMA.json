@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Final Prompt Founder Guide Artifact Manifest (conceptual v1.1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "guide_id",
+    "run_id",
+    "project_id",
+    "as_of",
+    "source_commit",
+    "classification",
+    "software_verdict",
+    "distribution_verdict",
+    "artifacts",
+    "sources_verified"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "guide_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "enum": [
+        "OWNER_PRIVATE",
+        "INTERNAL",
+        "CONFIDENTIAL",
+        "RESTRICTED"
+      ]
+    },
+    "software_verdict": {
+      "enum": [
+        "SHIP_VERIFIED_SCOPE",
+        "BLOCK",
+        "HUMAN_REVIEW_REQUIRED"
+      ]
+    },
+    "distribution_verdict": {
+      "enum": [
+        "PRIVATE_READY",
+        "REQUIRES_OWNER_CONFIRMATION",
+        "BLOCKED_FOR_DISTRIBUTION",
+        "PARTIAL_ARCHIVE"
+      ]
+    },
+    "sources_verified": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unverified_claims": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "artifact_audit_status": {
+      "enum": [
+        "NOT_STARTED",
+        "PARTIAL",
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256",
+          "bytes",
+          "kind",
+          "verified"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kind": {
+            "enum": [
+              "markdown",
+              "html",
+              "pdf",
+              "json",
+              "diagram",
+              "other"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

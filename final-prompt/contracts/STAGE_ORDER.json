@@ -1,0 +1,175 @@
+{
+  "version": "1.3.0",
+  "total_modules": 25,
+  "stages": [
+    {
+      "id": "01",
+      "module": "GAP_ANALYSIS",
+      "path": "modules/01_GAP_ANALYSIS.md",
+      "category": "discovery"
+    },
+    {
+      "id": "02",
+      "module": "ARCHITECTURE_CONTRACTS",
+      "path": "modules/02_ARCHITECTURE_CONTRACTS.md",
+      "category": "discovery"
+    },
+    {
+      "id": "03",
+      "module": "SYSTEM_INTEGRATION_CLOSURE",
+      "path": "modules/03_SYSTEM_INTEGRATION_CLOSURE.md",
+      "category": "architecture_integration"
+    },
+    {
+      "id": "04",
+      "module": "API_ORCHESTRATION_INTEGRITY",
+      "path": "modules/04_API_ORCHESTRATION_INTEGRITY.md",
+      "category": "architecture_integration"
+    },
+    {
+      "id": "05",
+      "module": "BACKEND_API",
+      "path": "modules/05_BACKEND_API.md",
+      "category": "repair"
+    },
+    {
+      "id": "06",
+      "module": "FRONTEND",
+      "path": "modules/06_FRONTEND.md",
+      "category": "repair"
+    },
+    {
+      "id": "07",
+      "module": "COMPONENT",
+      "path": "modules/07_COMPONENT.md",
+      "category": "repair"
+    },
+    {
+      "id": "08",
+      "module": "SECURITY",
+      "path": "modules/08_SECURITY.md",
+      "category": "repair"
+    },
+    {
+      "id": "09",
+      "module": "DATA_RECOVERY",
+      "path": "modules/09_DATA_RECOVERY.md",
+      "category": "repair"
+    },
+    {
+      "id": "10",
+      "module": "BUSINESS_LOGIC",
+      "path": "modules/10_BUSINESS_LOGIC.md",
+      "category": "repair"
+    },
+    {
+      "id": "11",
+      "module": "ARCHITECTURAL_RESILIENCE",
+      "path": "modules/11_ARCHITECTURAL_RESILIENCE.md",
+      "category": "repair"
+    },
+    {
+      "id": "12",
+      "module": "PERFORMANCE",
+      "path": "modules/12_PERFORMANCE.md",
+      "category": "quality"
+    },
+    {
+      "id": "13",
+      "module": "INFRA_CICD",
+      "path": "modules/13_INFRA_CICD.md",
+      "category": "quality"
+    },
+    {
+      "id": "14",
+      "module": "OBSERVABILITY",
+      "path": "modules/14_OBSERVABILITY.md",
+      "category": "quality"
+    },
+    {
+      "id": "15",
+      "module": "ACCESSIBILITY",
+      "path": "modules/15_ACCESSIBILITY.md",
+      "category": "quality"
+    },
+    {
+      "id": "16",
+      "module": "SEO_MACHINE_READABILITY",
+      "path": "modules/16_SEO_MACHINE_READABILITY.md",
+      "category": "quality"
+    },
+    {
+      "id": "17",
+      "module": "LEGAL_GOVERNANCE",
+      "path": "modules/17_LEGAL_GOVERNANCE.md",
+      "category": "quality"
+    },
+    {
+      "id": "18",
+      "module": "BRANDING",
+      "path": "modules/18_BRANDING.md",
+      "category": "quality"
+    },
+    {
+      "id": "19",
+      "module": "UNIVERSAL_VISUAL_POLISH",
+      "path": "modules/19_UNIVERSAL_VISUAL_POLISH.md",
+      "category": "quality"
+    },
+    {
+      "id": "20",
+      "module": "TEST_ADVERSARIAL",
+      "path": "modules/20_TEST_ADVERSARIAL.md",
+      "category": "verify_release"
+    },
+    {
+      "id": "21",
+      "module": "DEPLOYMENT_ROLLBACK",
+      "path": "modules/21_DEPLOYMENT_ROLLBACK.md",
+      "category": "verify_release"
+    },
+    {
+      "id": "22",
+      "module": "FINAL_GAP_SWEEP",
+      "path": "modules/22_FINAL_GAP_SWEEP.md",
+      "category": "verify_release"
+    },
+    {
+      "id": "23",
+      "module": "RELEASE_GATE",
+      "path": "modules/23_RELEASE_GATE.md",
+      "category": "verify_release"
+    },
+    {
+      "id": "24",
+      "module": "FOUNDERS_GUIDE",
+      "path": "modules/24_FOUNDERS_GUIDE.md",
+      "category": "archive"
+    },
+    {
+      "id": "25",
+      "module": "GUIDE_AUDIT",
+      "path": "modules/25_GUIDE_AUDIT.md",
+      "category": "archive"
+    }
+  ],
+  "last_software_gate": "23",
+  "private_archive": [
+    "24",
+    "25"
+  ],
+  "host_preconditions": [
+    "authenticate_and_authorize",
+    "pin_policy_and_repo_commit",
+    "server_enforce_budget_and_tool_allowlist",
+    "bind_approvals_to_exact_action",
+    "isolate_tenant_artifacts",
+    "create_durable_run_id"
+  ],
+  "selection_semantics": {
+    "full_suite": "01..23, plus 24..25 only when private owner archive explicitly authorized",
+    "standalone": "selected in-scope modules only; their prerequisites must be evidenced",
+    "on_drift": "reopen earliest owning stage and retest dependent checks",
+    "not_applicable": "no invented features or vendor services to satisfy generic categories"
+  }
+}
